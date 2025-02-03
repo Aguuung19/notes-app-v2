@@ -5,6 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import HomePage from "../pages/HomePage";
 import ArchivedPage from "../pages/ArchivePage";
+import InputNoteForm from "./InputNoteForm";
 import { getUserLogged, putAccessToken } from "../utils/api-data"; 
 import { LocaleProvider } from "../contexts/LocaleContext";
 
@@ -127,7 +128,7 @@ class NotesApp extends React.Component {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/archivedNote" element={<ArchivedPage />} />
-              <Route path="/addNote" element={<p>tambah </p>} />
+              <Route path="/addNote" element={<InputNoteForm />} />
             </Routes>
           </main>
         </div>

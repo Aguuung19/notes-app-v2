@@ -72,11 +72,11 @@ main {
   font-weight: normal;
 }
  
-.login-input, .register-input, .contact-input {
+.login-input, .register-input, .note-input {
   margin-top: 16px;
 }
  
-.login-input input, .register-input input, .contact-input input {
+.login-input input, .register-input input, .note-input input {
   display: block;
   padding: 16px;
   width: 100%;
@@ -87,7 +87,7 @@ main {
   border-radius: 8px;
 }
  
-.login-input button, .register-input button, .contact-input button {
+.login-input button, .register-input button, .note-input button {
   display: block;
   width: 100%;
   padding: 16px;

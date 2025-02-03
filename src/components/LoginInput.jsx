@@ -1,64 +1,35 @@
 import React from "react";
 import PropTypes from "prop-types";
+import useInput from "../hooks/useInput";
 
-class LoginInput extends React.Component {
-  constructor(props) {
-    super(props);
+function LoginInput({ login }) {
+  const { value: email, handleValueChange: handleEmailChange } = useInput("");
+  const { value: password, handleValueChange: handlePasswordChange } =
+    useInput("");
 
-    this.state = {
-      email: "",
-      password: "",
-    };
-
-    this.onEmailChangeHandler = this.onEmailChangeHandler.bind(this);
-    this.onPasswordChangeHandler = this.onPasswordChangeHandler.bind(this);
-    this.onSubmitHandler = this.onSubmitHandler.bind(this);
-  }
-
-  onEmailChangeHandler(event) {
-    this.setState(() => {
-      return {
-        email: event.target.value,
-      };
-    });
-  }
-
-  onPasswordChangeHandler(event) {
-    this.setState(() => {
-      return {
-        password: event.target.value,
-      };
-    });
-  }
-
-  onSubmitHandler(event) {
+  const onSubmitHandler = (event) => {
     event.preventDefault();
+    login({ email, password });
+  };
 
-    this.props.login({
-      email: this.state.email,
-      password: this.state.password,
-    });
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.onSubmitHandler} className="login-input">
-        <input
-          type="email"
-          placeholder="Email"
-          value={this.state.email}
-          onChange={this.onEmailChangeHandler}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={this.state.password}
-          onChange={this.onPasswordChangeHandler}
-        />
-        <button>Masuk</button>
-      </form>
-    );
-  }
+  return (
+    <form className="login-input" onSubmit={onSubmitHandler}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={handleEmailChange}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        autoComplete="current-password"
+        value={password}
+        onChange={handlePasswordChange}
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
 }
 
 LoginInput.propTypes = {
