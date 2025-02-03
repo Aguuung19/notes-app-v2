@@ -174,7 +174,7 @@ main {
 .note-item__action {
   display: flex;
   margin-top: 12px;
-  gap: 4px;
+  gap: 8px;
   justify-self: end;
   
 }
@@ -183,6 +183,14 @@ button {
   border: none;
   background-color: transparent;
   font-size: 24px;
+}
+
+.button-delete {
+  color: var(--error);
+}
+
+.button-archive {
+  color: var(--warning);
 }
 
 .action {

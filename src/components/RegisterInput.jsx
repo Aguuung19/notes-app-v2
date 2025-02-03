@@ -1,82 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import useInput from "../hooks/useInput";
 
-class RegisterInput extends React.Component {
-  constructor(props) {
-    super(props);
+function RegisterInput({ register }) {
+  const { value: email, handleValueChange: handleEmailChange } = useInput("");
+  const { value: password, handleValueChange: handlePasswordChange } =
+    useInput("");
+  const {
+    value: confirmPassword,
+    handleValueChange: handleConfirmPasswordChange,
+  } = useInput("");
+  const { value: name, handleValueChange: handleNameChange } = useInput("");
+  const [error, setError] = useState("");
 
-    this.state = {
-      name: "",
-      email: "",
-      password: "",
-    };
-
-    this.onNameChange = this.onNameChange.bind(this);
-    this.onEmailChange = this.onEmailChange.bind(this);
-    this.onPasswordChange = this.onPasswordChange.bind(this);
-    this.onSubmitHandler = this.onSubmitHandler.bind(this);
-  }
-
-  onNameChange(event) {
-    this.setState(() => {
-      return {
-        name: event.target.value,
-      };
-    });
-  }
-
-  onEmailChange(event) {
-    this.setState(() => {
-      return {
-        email: event.target.value,
-      };
-    });
-  }
-
-  onPasswordChange(event) {
-    this.setState(() => {
-      return {
-        password: event.target.value,
-      };
-    });
-  }
-
-  onSubmitHandler(event) {
+  const onSubmit = (event) => {
     event.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    setError("");
+    register({ name, email, password, confirmPassword });
+  };
 
-    this.props.register({
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-    });
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.onSubmitHandler} className="register-input">
-        <input
-          type="text"
-          placeholder="Nama"
-          value={this.state.name}
-          onChange={this.onNameChange}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={this.state.email}
-          onChange={this.onEmailChange}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          autoComplete="current-password"
-          value={this.state.password}
-          onChange={this.onPasswordChange}
-        />
-        <button>Register</button>
-      </form>
-    );
-  }
+  return (
+    <form className="register-input" onSubmit={onSubmit}>
+      <input
+        type="text"
+        placeholder="Nama"
+        value={name}
+        onChange={handleNameChange}
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={handleEmailChange}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        autoComplete="current-password"
+        value={password}
+        onChange={handlePasswordChange}
+      />
+      <input
+        type="password"
+        placeholder="Konfirmasi Password"
+        autoComplete="current-password"
+        value={confirmPassword}
+        onChange={handleConfirmPasswordChange}
+      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button type="submit">Register</button>
+    </form>
+  );
 }
 
 RegisterInput.propTypes = {
