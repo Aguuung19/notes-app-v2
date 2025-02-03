@@ -14,6 +14,7 @@ class NotesApp extends React.Component {
     this.state = {
       authedUser: null,
       initializing: true,
+      theme: localStorage.getItem("theme") || "light",
       localeContext: {
         locale: localStorage.getItem("locale") || "en",
         toggleLocale: () => {
@@ -30,10 +31,11 @@ class NotesApp extends React.Component {
           });
         },
       },
-      };
-      
-        this.onLoginSuccess = this.onLoginSuccess.bind(this);
-        this.onLogout = this.onLogout.bind(this);
+    };
+
+    this.onLoginSuccess = this.onLoginSuccess.bind(this);
+    this.onLogout = this.onLogout.bind(this);
+    this.toggleTheme = this.toggleTheme.bind(this);
   }
 
   async componentDidMount() {
@@ -45,6 +47,7 @@ class NotesApp extends React.Component {
         initializing: false,
       };
     });
+    document.documentElement.setAttribute("data-theme", this.state.theme);
   }
 
   async onLoginSuccess({ accessToken }) {
@@ -66,6 +69,15 @@ class NotesApp extends React.Component {
     });
 
     putAccessToken("");
+  }
+
+  toggleTheme() {
+    this.setState((prevState) => {
+      const newTheme = prevState.theme === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+      return { theme: newTheme };
+    });
   }
 
   render() {
@@ -106,6 +118,8 @@ class NotesApp extends React.Component {
             <Navigation
               logout={this.onLogout}
               name={this.state.authedUser.name}
+              theme={this.state.theme}
+              toggleTheme={this.toggleTheme}
             />
           </header>
           <main>
