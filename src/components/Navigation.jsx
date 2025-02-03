@@ -12,7 +12,7 @@ function Navigation({ logout, name }) {
           <nav className="navigation">
             <ul>
               <li>
-                <button onClick={toggleLocale}>
+                <button className="button-locale" onClick={toggleLocale}>
                   {locale === "id" ? "en" : "id"}
                 </button>
               </li>
@@ -27,7 +27,7 @@ function Navigation({ logout, name }) {
                 </Link>
               </li>
               <li>
-                <button onClick={logout}>
+                <button className="button-logout" onClick={logout}>
                   {name} <FiLogOut />
                 </button>
               </li>
@@ -41,6 +41,7 @@ function Navigation({ logout, name }) {
 
 Navigation.propTypes = {
   logout: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default Navigation;

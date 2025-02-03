@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Navigation from "./Navigation";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import HomePage from "../pages/HomePage";
 import { getUserLogged, putAccessToken } from "../utils/api-data"; 
 import { LocaleProvider } from "../contexts/LocaleContext";
 
@@ -13,16 +14,16 @@ class NotesApp extends React.Component {
     this.state = {
       authedUser: null,
       initializing: true,
-      LocaleContext: {
+      localeContext: {
         locale: localStorage.getItem("locale") || "en",
         toggleLocale: () => {
           this.setState((prevState) => {
             const newLocale =
-              prevState.LocaleContext.locale === "en" ? "id" : "en";
+              prevState.localeContext.locale === "en" ? "id" : "en";
             localStorage.setItem("locale", newLocale);
             return {
-              LocaleContext: {
-                ...prevState.LocaleContext,
+              localeContext: {
+                ...prevState.localeContext,
                 locale: newLocale,
               },
             };
@@ -99,8 +100,8 @@ class NotesApp extends React.Component {
           <header className="contact-app__header">
             <h1>
               {this.state.localeContext.locale === "id"
-                ? "Aplikasi Kontak"
-                : "Contacts App"}
+                ? "Aplikasi Notes"
+                : "Notes App"}
             </h1>
             <Navigation
               logout={this.onLogout}
@@ -109,7 +110,7 @@ class NotesApp extends React.Component {
           </header>
           <main>
             <Routes>
-              <Route path="/" element={<p>homepage </p>} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/addNote" element={<p>tambah </p>} />
             </Routes>
           </main>
