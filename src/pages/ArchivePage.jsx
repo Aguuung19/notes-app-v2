@@ -1,45 +1,45 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { getActiveNotes, deleteNote, archiveNote } from "../utils/api-data";
+import { getArchivedNotes, deleteNote, unarchiveNote } from "../utils/api-data";
 import NoteItemList from "../components/NoteItemList";
-import LocaleContext  from "../contexts/LocaleContext";
+import LocaleContext from "../contexts/LocaleContext";
 
-function HomePage() {
+function ArchivedPage() {
   const [notes, setNotes] = React.useState([]);
   const { locale } = React.useContext(LocaleContext);
 
   React.useEffect(() => {
-    getActiveNotes().then(({ data }) => {
+    getArchivedNotes().then(({ data }) => {
       setNotes(data);
     });
   }, []);
 
   async function handleDelete(id) {
     await deleteNote(id);
-    const { data } = await getActiveNotes();
+    const { data } = await getArchivedNotes();
     setNotes(data);
   }
 
-  async function handleArchive(id) {
-    await archiveNote(id);
-    const { data } = await getActiveNotes();
+  async function handleUnarchive(id) {
+    await unarchiveNote(id);
+    const { data } = await getArchivedNotes();
     setNotes(data);
   }
 
   return (
     <div className="notes-app">
-      <h2>{locale === "en" ? "Notes" : "Catatan"}</h2>
+      <h2>{locale === "en" ? "Archived Notes" : "Catatan Terarsip"}</h2>
       <NoteItemList
         notes={notes}
         onDelete={handleDelete}
-        onArchive={handleArchive}
+        onArchive={handleUnarchive}
       />
     </div>
   );
 }
 
-HomePage.propTypes = {
+ArchivedPage.propTypes = {
   notes: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default HomePage;
+export default ArchivedPage;

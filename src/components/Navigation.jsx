@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { FiHome, FiPlusCircle, FiLogOut } from "react-icons/fi";
+import { FiHome, FiArchive, FiPlusCircle, FiLogOut } from "react-icons/fi";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { LocaleConsumer } from "../contexts/LocaleContext";
 
@@ -25,6 +25,11 @@ function Navigation({ logout, name, theme, toggleTheme }) {
               <li>
                 <Link to="/">
                   <FiHome />
+                </Link>
+              </li>
+              <li>
+                <Link to="/archivedNote">
+                  <FiArchive />
                 </Link>
               </li>
               <li>
