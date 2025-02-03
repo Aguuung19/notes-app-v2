@@ -5,13 +5,19 @@ import NoteItemList from "../components/NoteItemList";
 import LocaleContext from "../contexts/LocaleContext";
 
 function ArchivedPage() {
-  const [notes, setNotes] = React.useState([]);
-  const { locale } = React.useContext(LocaleContext);
+    const [notes, setNotes] = React.useState([]);
+    const { locale } = React.useContext(LocaleContext);
+    const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     getArchivedNotes().then(({ data }) => {
-      setNotes(data);
+        setNotes(data);
+        setLoading(false);
     });
+      
+    return () => {
+      setLoading(false);
+    };
   }, []);
 
   async function handleDelete(id) {
@@ -24,7 +30,11 @@ function ArchivedPage() {
     await unarchiveNote(id);
     const { data } = await getArchivedNotes();
     setNotes(data);
-  }
+    }
+    
+    if (loading) {
+        return <div>Loading...</div>;
+    };
 
   return (
     <div className="notes-app">
