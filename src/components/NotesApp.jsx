@@ -10,6 +10,9 @@ import PageNotFound from "../pages/PageNotFound";
 import DetailNotePage from "../pages/DetailNotePage";
 import { getUserLogged, putAccessToken } from "../utils/api-data"; 
 import { LocaleProvider } from "../contexts/LocaleContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
+
+
 
 class NotesApp extends React.Component {
   constructor(props) {
@@ -18,8 +21,8 @@ class NotesApp extends React.Component {
     this.state = {
       authedUser: null,
       initializing: true,
-      theme: localStorage.getItem("theme") || "light",
       notes: [],
+      theme: localStorage.getItem("theme") || "light",
       localeContext: {
         locale: localStorage.getItem("locale") || "en",
         toggleLocale: () => {
@@ -38,12 +41,15 @@ class NotesApp extends React.Component {
       },
     };
 
+
+;
+
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
     this.onLogout = this.onLogout.bind(this);
-    this.toggleTheme = this.toggleTheme.bind(this);
   }
 
   async componentDidMount() {
+    this.updateTheme();
     const { data } = await getUserLogged();
 
     this.setState(() => {
@@ -54,6 +60,29 @@ class NotesApp extends React.Component {
     });
     document.documentElement.setAttribute("data-theme", this.state.theme);
   }
+
+  updateTheme = () => {
+    document.documentElement.setAttribute("data-theme", this.state.theme);
+  };
+
+  toggleTheme = () => {
+    this.setState(
+      (prevState) => {
+        const newTheme = prevState.theme === "light" ? "dark" : "light";
+        localStorage.setItem("theme", newTheme);
+        return { theme: newTheme };
+      },
+      () => this.updateTheme()
+    );
+  };
+
+  toggleLocale = () => {
+    this.setState((prevState) => {
+      const newLocale = prevState.locale === "en" ? "id" : "en";
+      localStorage.setItem("locale", newLocale);
+      return { locale: newLocale };
+    });
+  };
 
   async onLoginSuccess({ accessToken }) {
     putAccessToken(accessToken);
@@ -74,15 +103,6 @@ class NotesApp extends React.Component {
     });
 
     putAccessToken("");
-  }
-
-  toggleTheme() {
-    this.setState((prevState) => {
-      const newTheme = prevState.theme === "light" ? "dark" : "light";
-      localStorage.setItem("theme", newTheme);
-      document.documentElement.setAttribute("data-theme", newTheme);
-      return { theme: newTheme };
-    });
   }
 
   render() {
@@ -112,32 +132,36 @@ class NotesApp extends React.Component {
     }
 
     return (
-      <LocaleProvider value={this.state.localeContext}>
-        <div className="contact-app">
-          <header className="contact-app__header">
-            <h1>
-              {this.state.localeContext.locale === "id"
-                ? "Aplikasi Notes"
-                : "Notes App"}
-            </h1>
-            <Navigation
-              logout={this.onLogout}
-              name={this.state.authedUser.name}
-              theme={this.state.theme}
-              toggleTheme={this.toggleTheme}
-            />
-          </header>
-          <main>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/note/:id" element={<DetailNotePage />} />
-              <Route path="/archivedNote" element={<ArchivedPage />} />
-              <Route path="/addNote" element={<InputNotePage />} />
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
-          </main>
-        </div>
-      </LocaleProvider>
+      <ThemeProvider
+        value={{ theme: this.state.theme, toggleTheme: this.toggleTheme }}
+      >
+        <LocaleProvider
+          value={{ locale: this.state.locale, toggleLocale: this.toggleLocale }}
+        >
+          <div className="contact-app">
+            <header className="contact-app__header">
+              <h1>
+                {this.state.localeContext.locale === "id"
+                  ? "Aplikasi Notes"
+                  : "Notes App"}
+              </h1>
+              <Navigation
+                logout={this.onLogout}
+                name={this.state.authedUser.name}
+              />
+            </header>
+            <main>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/note/:id" element={<DetailNotePage />} />
+                <Route path="/archivedNote" element={<ArchivedPage />} />
+                <Route path="/addNote" element={<InputNotePage />} />
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </main>
+          </div>
+        </LocaleProvider>
+      </ThemeProvider>
     );
   }
 }

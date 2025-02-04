@@ -50,15 +50,18 @@ function HomePage() {
    }
 
   return (
-   
     <div className="notes-app">
-          <h2>{locale === "en" ? "Notes" : "Catatan"}</h2>
-            <SearchBar keyword={keyword} keywordChange={changeSearchParams} />
-      <NoteItemList
-        notes={filteredNotes}
-        onDelete={handleDelete}
-        onArchive={handleArchive}
-      />
+      <h2>{locale === "en" ? "Notes" : "Catatan"}</h2>
+      <SearchBar keyword={keyword} keywordChange={changeSearchParams} />
+      {filteredNotes.length > 0 ? (
+        <NoteItemList
+          notes={filteredNotes}
+          onDelete={handleDelete}
+          onArchive={handleArchive}
+        />
+      ) : (
+        <p>{locale === "end" ? "No Notes Available" : "Tidak Ada Catatan"}</p>
+      )}
     </div>
   );
 }

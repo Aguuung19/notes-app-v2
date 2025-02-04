@@ -53,11 +53,18 @@ function ArchivedPage() {
     <div className="notes-app">
       <h2>{locale === "en" ? "Archived Notes" : "Catatan Terarsip"}</h2>
       <SearchBar keyword={keyword} keywordChange={changeSearchParams} />
-      <NoteItemList
+      {filteredNotes.length > 0 ? (
+        <NoteItemList
         notes={filteredNotes}
         onDelete={handleDelete}
         onArchive={handleUnarchive}
       />
+      ) : (
+          <p>
+            {locale === 'en' ? "No Archived Notes" : "Tidak Ada Catatan Terarsip"}
+          </p>
+
+      )}
     </div>
   );
 }
