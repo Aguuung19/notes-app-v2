@@ -3,8 +3,15 @@ import PropTypes from "prop-types";
 import { FiDelete } from "react-icons/fi";
 
 function DeleteButton({ id, onDelete }) {
+
+    const handleDelete = () => {
+        if (window.confirm("Are you sure you want to delete this note?")) {
+            onDelete(id);
+        }
+    };
+
     return (
-        <button className="button-delete" onClick={() => onDelete(id)}>
+        <button className="button-delete" onClick={handleDelete}>
             <FiDelete />
         </button>
     );

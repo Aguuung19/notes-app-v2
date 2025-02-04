@@ -2,10 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import useInput from "../hooks/useInput";
+import LocaleContext from "../contexts/LocaleContext"; 
 
 function InputNoteForm({ addNote }) {
   const { value: title, handleValueChange: handleTitleChange } = useInput("");
-  const [content, setContent] = React.useState("");
+  const { locale } = React.useContext(LocaleContext);
+  const [body, setContent] = React.useState("");
   const navigate = useNavigate();
 
   const handleContentChange = (event) => {
@@ -16,7 +18,7 @@ function InputNoteForm({ addNote }) {
     event.preventDefault();
     await addNote({
       title,
-      content,
+      body,
     });
     navigate("/");
   };
@@ -26,7 +28,7 @@ function InputNoteForm({ addNote }) {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Judul Catatan"
+          placeholder={locale === "id" ? "Judul Catatan" : "Note Title"}
           value={title}
           onChange={handleTitleChange}
           required
@@ -34,13 +36,12 @@ function InputNoteForm({ addNote }) {
         />
         <div
           contentEditable
-          placeholder="Content"
+          placeholder={locale === "id" ? "isi Catatan" : "Note Content"}
           onInput={handleContentChange}
           className="add-new-page__input__body"
-          
         />
-        <button type="submit" className="add-new-page__action">
-          Add Note
+        <button type="submit" className="button-add">
+          {locale === "id" ? "Tambah Catatan" : "Add Note"}
         </button>
       </form>
     </section>

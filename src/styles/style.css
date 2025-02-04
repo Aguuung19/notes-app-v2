@@ -193,6 +193,14 @@ button {
   color: var(--warning);
 }
 
+.button-add {
+  background: var(--on-background);
+  color: var(--background);
+  padding: 8px 16px;
+  border-radius: 8px;
+  top-margin: 16px;
+}
+
 .action {
   display: flex;
   align-items: center;
