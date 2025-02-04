@@ -4,11 +4,11 @@ import Navigation from "./Navigation";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import HomePage from "../pages/HomePage";
-import ArchivePage from "../pages/ArchivePage";
+import ArchivedPage from "../pages/ArchivePage";
 import InputNotePage from "../pages/InputNotePage";
-import DetailNotePage from "../pages/DetailNotePage";
 import PageNotFound from "../pages/PageNotFound";
-import { getUserLogged, putAccessToken } from "../utils/api-data";
+import DetailNotePage from "../pages/DetailNotePage";
+import { getUserLogged, putAccessToken } from "../utils/api-data"; 
 import { LocaleProvider } from "../contexts/LocaleContext";
 
 class NotesApp extends React.Component {
@@ -45,13 +45,25 @@ class NotesApp extends React.Component {
 
   async componentDidMount() {
     const { data } = await getUserLogged();
-    this.setState({ authedUser: data, initializing: false });
 
+    this.setState(() => {
+      return {
+        authedUser: data,
+        initializing: false,
+      };
+    });
     document.documentElement.setAttribute("data-theme", this.state.theme);
   }
 
-  onLoginSuccess(user) {
-    this.setState({ authedUser: user });
+  async onLoginSuccess({ accessToken }) {
+    putAccessToken(accessToken);
+    const { data } = await getUserLogged();
+
+    this.setState(() => {
+      return {
+        authedUser: data,
+      };
+    });
   }
 
   onLogout() {
@@ -119,7 +131,7 @@ class NotesApp extends React.Component {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/note/:id" element={<DetailNotePage />} />
-              <Route path="/archivedNote" element={<ArchivePage />} />
+              <Route path="/archivedNote" element={<ArchivedPage />} />
               <Route path="/addNote" element={<InputNotePage />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>

@@ -11,7 +11,7 @@ function NoteItemBody({ id, title, body, createdAt }) {
                 <Link to={`/note/${id}`}>{title}</Link>
             </h3>
             <p className="note-item__createAt">{showFormattedDate(createdAt)}</p>
-            <p className="note-item__body">{parse(body)}</p>
+            <div className="note-item__body">{parse(body)}</div>
         </div>
     );
 }
