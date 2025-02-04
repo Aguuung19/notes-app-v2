@@ -1,24 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { showFormattedDate } from "../utils/formatedDate";
 import parse from "html-react-parser";
+import { showFormattedDate } from "../utils/formatedDate";
 
-function NoteItemBody({ id, title, body, createdAt }) {
+function NoteItemDetail({ title, body, createdAt }) {
+
     return (
-        <div className="note-item__content">
-            <h3 className="note-item__title">
-                <Link to={`/note/${id}`}>{title}</Link>
-            </h3>
+        <div className="detail-page">
+            <h3 className="note-item__title">{title}</h3>
             <p className="note-item__createAt">{showFormattedDate(createdAt)}</p>
             <p className="note-item__body">{parse(body)}</p>
         </div>
     );
 }
-NoteItemBody.propTypes = {
+
+NoteItemDetail.propTypes = {
     title: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
 };
 
-export default NoteItemBody;
+export default NoteItemDetail;
